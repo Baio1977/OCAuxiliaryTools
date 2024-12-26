@@ -514,4 +514,10 @@ Not needed on AMD systems.
 Type: plist boolean
 Failsafe: false
 Not to show picker if waking from macOS hibernation.
+
+
+***AllowRelocationBlock
+Type: plist boolean
+Failsafe: false
+(support for 32-bit OpenCore): this quirk is needed to boot macOS 10.6 and older with 32-bit kernel in 32-bit OVMF. Hibernation wake is not compatible with this quirk.
 	
