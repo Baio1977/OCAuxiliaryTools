@@ -1,29 +1,21 @@
 
 ***FadtEnableReset
 Type: plist boolean
-
 Description: Provide reset register and flag in FADT table to enable reboot and shutdown.
-
 Mainly required on legacy hardware and a few newer laptops. Can also fix power-button shortcuts. Not recommended unless required.
 ----
 类型：plist布尔值
-
 描述：在FADT表中提供复位寄存器和标志，以实现重启和关机。
-
 主要是在传统硬件和一些较新的笔记本上需要。也可以修复电源按钮的快捷方式。除非需要，否则不建议使用。如果关机变重启可以尝试使用。
 
 
 ***NormalizeHeaders
 Description: Cleanup ACPI header fields to workaround macOS ACPI implementation flaws that result in boot crashes. 
-
 Reference: Debugging AppleACPIPlatform on 10.13 by Alex James (also known as theracermaster). 
-
 The issue was fixed in macOS Mojave (10.14).
 ----
 描述：清理 ACPI 头部字段，以解决 macOS ACPI 实施缺陷导致的启动崩溃问题。一般在 10.13 系统上的某些主板会出现这种情况。
-
 参考文献: Debugging AppleACPIPlatform on 10.13 by Alex James (other known as theracermaster). 
-
 这个问题在macOS Mojave (10.14)中得到了修复。
 
 
@@ -35,6 +27,7 @@ Description: Refer to SMBIOS SystemProductName.
 类型：plist字符串
 失效保护：空(OEM指定或未安装)
 描述：参考 SMBIOS SystemProductName。
+
 
 ***HibernateMode
 Type: plist string
@@ -56,73 +49,62 @@ Note: If the firmware can handle hibernation itself (valid for Mac EFI firmware)
 - NVRAM - 使用NVRAM检测。
 注意：如果固件可以自己处理休眠（对Mac EFI固件有效），那么应该指定None，以便将休眠状态原封不动地交给OpenCore。
 
-// Kernel Quirks
+
 ***DisableRtcChecksum
 Type: plist boolean
 Failsafe: false
 Requirement: 10.4
-
 Description: Disables primary checksum (0x58-0x59) writing in AppleRTC.
-
 Note 1 : This option will not protect other areas from being overwritten, see RTCMemoryFixup kernel extension if this is desired.
 Note 2 : This option will not protect areas from being overwritten at firmware stage (e.g. macOS bootloader), see AppleRtcRam protocol description if this is desired.
 ----
 类型：plist布尔值
 失败保护: false
 要求：10.4
-
 描述：禁用AppleRTC中的主校验和（0x58-0x59）写入。关于 RTC 建议使用 RTCMemoryFixup.kext。
-
 注1：该选项不会保护其他区域被覆盖，如果需要，请看RTCMemoryFixup内核扩展。
 注2 : 该选项不会保护在固件阶段(如macOS bootloader)被覆盖的区域，如果需要，请看AppleRtcRam协议描述。
+
 
 ***ExtendBTFeatureFlags
 Type: plist boolean
 Failsafe: false
 Requirement: 10.8-11
-
-Description: Set FeatureFlags to 0x0F for full functionality of Bluetooth, including Continuity.
-	
+Description: Set FeatureFlags to 0x0F for full functionality of Bluetooth, including Continuity.	
 Note: This option is a substitution for BT4LEContinuityFixup.kext, which does not function properly due to late patching progress.
 ----
 类型：plist布尔值
 失败保护: false
 要求：10.8-11
-
-描述：设置FeatureFlags为0x0F以获得蓝牙的全部功能，包括Continuity。
-	
+描述：设置FeatureFlags为0x0F以获得蓝牙的全部功能，包括Continuity。	
 注意: 这个选项是BT4LEContinuityFixup.kext的替代品，由于补丁进度较晚，它不能正常工作。
+
 
 ***ExternalDiskIcons
 Type: plist boolean
 Failsafe: false
 Requirement: 10.4
-
 Description: Apply icon type patches to AppleAHCIPort.kext to force internal disk icons for all AHCI disks.
-
 Note: This option should be avoided whenever possible. Modern firmware typically have compatible AHCI controllers.
 ----
 类型：plist布尔值
 失败保护: false
 要求：10.4
-
 描述：对AppleAHCIPort.kext应用图标类型补丁，强制所有AHCI磁盘的图标显示为内部磁盘图标。一般用在macos把内部硬盘识别为外置硬盘时。
-
 注意：应该尽可能避免使用这个选项。主流的硬件对AHCI支持都很好。
+
 
 ***ForceSecureBootScheme
 Type: plist boolean
 Failsafe: false
 Requirement: 11
 Description: Force x86 scheme for IMG4 verification.
-	
 Note: This option is required on virtual machines when using SecureBootModel different from x86legacy.
 ----
 类型：plist布尔值
 失败保护: false
 要求：11
-描述：为IMG4验证强制使用x86方案。macos安装在虚拟机并开启SecurebootModel时可以考虑开启。
-	
+描述：为IMG4验证强制使用x86方案。macos安装在虚拟机并开启SecurebootModel时可以考虑开启。	
 注意: 当使用不同于x86legacy的SecureBootModel时，在虚拟机上需要这个选项。
 
 
@@ -130,47 +112,35 @@ Note: This option is required on virtual machines when using SecureBootModel dif
 Type: plist data, 16 bytes
 Failsafe: All zero
 Description: Bit mask of active bits in Cpuid1Data.
-
 When each Cpuid1Mask bit is set to 0, the original CPU bit is used, otherwise set bits take the value of Cpuid1Data.
 ----
-
 类型：plist数据，16字节
 失效保护：全部为零
 描述：Cpuid1Data中活动位的位掩码。
-
 当每个Cpuid1Mask位被设置为0时，使用原来的CPU位，否则设置的位取Cpuid1Data的值。
 
 
 ***MaxKernel
 Type: plist string
 Failsafe: Empty
-
 Description: Emulates CPUID and applies DummyPowerManagement on specified macOS version or older.
-
 Note: Refer to the Add MaxKernel description for matching logic.
 ----
 类型：plist字符串
 失败保护：空
-
 描述：仿真CPUID并在指定的macOS版本或更高版本上应用DummyPowerManagement。
-
 注意：请参考添加MaxKernel描述的匹配逻辑。
-
 
 
 ***MinKernel
 Type: plist string
 Failsafe: Empty
-
 Description: Emulates CPUID and applies DummyPowerManagement on specified macOS version or newer.
-
 Note: Refer to the Add MaxKernel description for matching logic.
 ----
 类型：plist字符串
 失败保护：空
-
 描述：在指定的macOS版本或更新版本上模拟CPUID并应用DummyPowerManagement。
-
 注意：请参考添加MaxKernel描述的匹配逻辑。
 
 
@@ -184,6 +154,7 @@ Note: Required to allow virtualization in Windows on some Mac hardware. VMX is e
 失败保护：false
 描述：启用英特尔虚拟机扩展。
 注意：需要在某些Mac硬件上允许在Windows中进行虚拟化。在大多数固件的OpenCore启动之前，VMX被BIOS启用或禁用并锁定。在可能的情况下使用BIOS来启用虚拟化。
+
 
 ***AudioOutMask
 Type: plist integer
@@ -296,7 +267,6 @@ Note 3 : Digital audio output – which does not have a volume slider in-OS – 
 注3：数字音频输出--在操作系统中没有音量滑块--忽略这个和所有其他增益设置，只有静音设置是相关的。
 
 
-
 ***MinimumAssistGain
 Type: plist integer
 Failsafe: -30
@@ -349,7 +319,6 @@ Note 2 : Messages printed before the configuration of log protocol cannot be fil
 当选择多个模块时，应使用逗号（,）作为分隔符。例如，+OCCPU,OCA,OCB意味着只打印OCCPU、OCA、OCB，而-OCCPU,OCA,OCB表示这些模块被过滤掉（即不记录）。当没有指定符号时，将使用正向过滤（+）。* 表示所有的模块都被记录下来。
 注1：库的首字母缩写可参见说明文档的“Libraries”部分。
 注2：在配置日志协议之前打印的信息不能被过滤。
-
 
 
 ***LegacyEnable
@@ -520,4 +489,11 @@ Not to show picker if waking from macOS hibernation.
 Type: plist boolean
 Failsafe: false
 (support for 32-bit OpenCore): this quirk is needed to boot macOS 10.6 and older with 32-bit kernel in 32-bit OVMF. Hibernation wake is not compatible with this quirk.
-	
+
+
+***FixupAppleEfiImages
+Type: plist boolean
+Failsafe: false
+Note : Mac OS X boot.efi images contain WˆX permissions errors (in all versions) and in very old versions additionally contain illegal overlapping sections (affects 10.4 and 10.5 32-bit versions only). Modern, strict PE loaders will refuse to load these images unless additional mitigations are applied. Image loaders which enforce these stricter rules include the loader provided with current versions of OpenDuet, the loader in OVMF if compiled from Acidanthera and possibly the image loaders of some very recent 3rd party firmware (e.g. Microsoft).
+This quirk detects these issues and pre-processes such images in memory so that a strict loader will accept them. On a system with such a modern, stricter loader this quirk is required to load Mac OS X 10.4 to macOS 10.12, and is required for all newer macOS when SecureBootModel is set to Disabled because pre-processing in memory is incompatible with UEFI Secure Boot, as the image loaded is not the image on disk, so you cannot sign files which are loaded in this way based on their original disk image contents.
+This quirk is never applied during Apple Secure Boot for newer macOS. The Apple Secure Boot path in OpenCore includes its own separate mitigations for boot.efi WˆX issues.	
