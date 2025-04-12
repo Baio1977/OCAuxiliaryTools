@@ -45,7 +45,7 @@ jobs:
           sudo add-apt-repository universe
           sudo apt install libfuse2
                    
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 1
       - name: build ubuntu
@@ -80,7 +80,7 @@ jobs:
          
         
       # 上传artifacts          
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4.6.2
         with:
           
           name: ${{ env.orgName }}-${{ env.VERSION }}-x86_64.AppImage
