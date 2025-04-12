@@ -496,4 +496,10 @@ Type: plist boolean
 Failsafe: false
 Note : Mac OS X boot.efi images contain WˆX permissions errors (in all versions) and in very old versions additionally contain illegal overlapping sections (affects 10.4 and 10.5 32-bit versions only). Modern, strict PE loaders will refuse to load these images unless additional mitigations are applied. Image loaders which enforce these stricter rules include the loader provided with current versions of OpenDuet, the loader in OVMF if compiled from Acidanthera and possibly the image loaders of some very recent 3rd party firmware (e.g. Microsoft).
 This quirk detects these issues and pre-processes such images in memory so that a strict loader will accept them. On a system with such a modern, stricter loader this quirk is required to load Mac OS X 10.4 to macOS 10.12, and is required for all newer macOS when SecureBootModel is set to Disabled because pre-processing in memory is incompatible with UEFI Secure Boot, as the image loaded is not the image on disk, so you cannot sign files which are loaded in this way based on their original disk image contents.
-This quirk is never applied during Apple Secure Boot for newer macOS. The Apple Secure Boot path in OpenCore includes its own separate mitigations for boot.efi WˆX issues.	
+This quirk is never applied during Apple Secure Boot for newer macOS. The Apple Secure Boot path in OpenCore includes its own separate mitigations for boot.efi WˆX issues.
+
+
+***ClearTaskSwitchBi
+Type: plist boolean
+Failsafe: false
+Fix crashes when using 32-bit versions of macOS on Hyper-V Gen2 VMs.		
