@@ -499,7 +499,7 @@ This quirk detects these issues and pre-processes such images in memory so that 
 This quirk is never applied during Apple Secure Boot for newer macOS. The Apple Secure Boot path in OpenCore includes its own separate mitigations for boot.efi WˆX issues.
 
 
-***ClearTaskSwitchBi
+***ClearTaskSwitchBit
 Type: plist boolean
 Failsafe: false
 Fix crashes when using 32-bit versions of macOS on Hyper-V Gen2 VMs.		
